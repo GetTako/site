@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Pindah ke root direktori proyek 'site'
+cd "$(dirname "$0")/.."
+
+COMMAND=$1
+shift || true
+
+function show_help() {
+    echo "Usage: ./bin/tako <command>"
+    echo ""
+    echo "Commands:"
+    echo "  sync        Sync the 'tako' and 'docs' repositories."
+    echo "  api:build   Generate the API reference documentation from Go packages."
+    echo "  build       Build the Nuxt web application."
+    echo "  all         Run sync, api:build, and build sequentially."
+    echo ""
+}
+
+function sync_repos() {
+    echo "========================================="
+    echo "        Syncing Tako & Docs              "
+    echo "========================================="
+
+    # Sync Tako
+    if [ -d "./tako" ]; then
+      echo "=> Pulling latest changes for tako repository..."
+      git -C ./tako pull origin main
+    else
+      echo "=> Cloning tako repository..."
+      git clone git@github.com:GetTako/tako.git ./tako
+    fi
+
+    # Sync Docs
+    if [ -d "./docs" ]; then
+      echo "=> Pulling latest changes for docs repository..."
+      git -C ./docs pull origin main
+    else
+      echo "=> Cloning docs repository..."
+      git clone git@github.com:GetTako/docs.git ./docs
+    fi
+    echo "=> Sync complete."
+}
+
+function build_api() {
+    echo "========================================="
+    echo "  Tako API Reference Generator (GoDoc)   "
+    echo "========================================="
+
+    # Ensure tako repo exists
+    if [ ! -d "./tako" ]; then
+      echo "=> Tako repository not found. Cloning first..."
+      git clone git@github.com:GetTako/tako.git ./tako
+    fi
+
+    # Ensure gomarkdoc is available
+    if ! command -v gomarkdoc &> /dev/null; then
+      echo "=> Installing gomarkdoc..."
+      go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
+    fi
+    export PATH=$PATH:$(go env GOPATH)/bin
+
+    API_DOCS_DIR="$(pwd)/docs/17.api-reference"
+
+    echo "=> Cleaning up existing API docs in 17.api-reference..."
+    find "$API_DOCS_DIR" -type f -name "*.md" -delete
+    find "$API_DOCS_DIR" -type d -empty -delete
+
+    echo "=> Generating API docs from Go packages..."
+    cd ./tako
+    gomarkdoc -o "${API_DOCS_DIR}/{{.Dir}}.md" ./...
+    cd ..
+
+    echo "=> Removing internal packages from documentation..."
+    rm -rf "${API_DOCS_DIR}/internal"
+    rm -f "${API_DOCS_DIR}/internal.md"
+
+    echo "=> Injecting Frontmatter..."
+    node "$(pwd)/bin/meta.mjs"
+
+    if [ -f "$API_DOCS_DIR/.md" ]; then
+      mv "$API_DOCS_DIR/.md" "$API_DOCS_DIR/index.md"
+    fi
+
+    echo "=> Done! API Reference is fully generated and ready."
+}
+
+function build_web() {
+    echo "========================================="
+    echo "           Building Web                  "
+    echo "========================================="
+
+    # Ensure docs repo exists
+    if [ -d "./docs" ]; then
+      echo "=> Pulling latest changes for docs repository..."
+      git -C ./docs pull origin main
+    else
+      echo "=> Cloning docs repository..."
+      git clone https://github.com/GetTako/docs.git ./docs
+    fi
+
+    echo "=> Running Nuxt build..."
+    bun run nuxt build
+}
+
+case "$COMMAND" in
+    sync)
+        sync_repos
+        ;;
+    api:build)
+        build_api
+        ;;
+    build)
+        build_web
+        ;;
+    all)
+        sync_repos
+        build_api
+        build_web
+        ;;
+    *)
+        if [ -n "$COMMAND" ]; then
+            echo "Unknown command: $COMMAND"
+        fi
+        show_help
+        exit 1
+        ;;
+esac

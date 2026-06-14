@@ -1,0 +1,557 @@
+/* ========================================
+   1. Theme & CSS Variables
+   ======================================== */
+
+@theme {
+  --color-primary-50: #f9f2ef;
+  --color-primary-100: #f3e2dc;
+  --color-primary-200: #edc2b4;
+  --color-primary-300: #e4a48f;
+  --color-primary-400: #db866a;
+  --color-primary-500: #cc5a35;
+  --color-primary-600: #ca562f;
+  --color-primary-700: #a04425;
+  --color-primary-800: #77321c;
+  --color-primary-900: #482418;
+  --color-primary-950: #2d160f;
+
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  --color-ui-bg: var(--ui-bg);
+  --color-ui-bg-muted: var(--ui-bg-muted);
+  --color-ui-bg-elevated: var(--ui-bg-elevated);
+  --color-ui-bg-accented: var(--ui-bg-accented);
+
+  --color-ui-border: var(--ui-border);
+  --color-ui-border-muted: var(--ui-border-muted);
+  --color-ui-border-accented: var(--ui-border-accented);
+
+  --color-ui-text-dimmed: var(--ui-text-dimmed);
+  --color-ui-text-muted: var(--ui-text-muted);
+  --color-ui-text-toned: var(--ui-text-toned);
+  --color-ui-text: var(--ui-text);
+  --color-ui-text-highlighted: var(--ui-text-highlighted);
+}
+
+:root {
+  /* Core Fonts */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Iosevka', monospace;
+  --ui-container: 90rem;
+
+  /* Primary Palette */
+  --ui-color-primary-50: var(--color-primary-50);
+  --ui-color-primary-100: var(--color-primary-100);
+  --ui-color-primary-200: var(--color-primary-200);
+  --ui-color-primary-300: var(--color-primary-300);
+  --ui-color-primary-400: var(--color-primary-400);
+  --ui-color-primary-500: var(--color-primary-500);
+  --ui-color-primary-600: var(--color-primary-600);
+  --ui-color-primary-700: var(--color-primary-700);
+  --ui-color-primary-800: var(--color-primary-800);
+  --ui-color-primary-900: var(--color-primary-900);
+  --ui-color-primary-950: var(--color-primary-950);
+
+  /* Secondary Palette */
+  --ui-color-secondary-50: var(--color-indigo-50, oklch(97% 0.014 254.604));
+  --ui-color-secondary-100: var(--color-indigo-100, oklch(93.2% 0.032 255.585));
+  --ui-color-secondary-200: var(--color-indigo-200, oklch(88.2% 0.059 254.128));
+  --ui-color-secondary-300: var(--color-indigo-300, oklch(80.9% 0.105 251.813));
+  --ui-color-secondary-400: var(--color-indigo-400, oklch(70.7% 0.165 254.624));
+  --ui-color-secondary-500: var(--color-indigo-500, oklch(62.3% 0.214 259.815));
+  --ui-color-secondary-600: var(--color-indigo-600, oklch(54.6% 0.245 262.881));
+  --ui-color-secondary-700: var(--color-indigo-700, oklch(48.8% 0.243 264.376));
+  --ui-color-secondary-800: var(--color-indigo-800, oklch(42.4% 0.199 265.638));
+  --ui-color-secondary-900: var(--color-indigo-900, oklch(37.9% 0.146 265.522));
+  --ui-color-secondary-950: var(--color-indigo-950, oklch(28.2% 0.091 267.935));
+
+  /* Nuxt UI Glassmorphism Overrides - Light Mode */
+  --ui-text-dimmed: var(--color-slate-500);
+  --ui-text-muted: var(--color-slate-600);
+  --ui-text-toned: var(--color-slate-700);
+  --ui-text: var(--color-slate-800);
+  --ui-text-highlighted: var(--color-slate-900);
+
+  --ui-bg: color-mix(in srgb, var(--color-primary-50) 50%, transparent);
+  --ui-bg-muted: color-mix(in srgb, var(--color-primary-200) 20%, transparent);
+  --ui-bg-elevated: color-mix(in srgb, var(--color-primary-200) 40%, transparent);
+  --ui-bg-accented: color-mix(in srgb, var(--color-primary-300) 50%, transparent);
+
+  --ui-border: color-mix(in srgb, var(--color-primary-900) 15%, transparent);
+  --ui-border-muted: color-mix(in srgb, var(--color-primary-900) 8%, transparent);
+  --ui-border-accented: color-mix(in srgb, var(--color-primary-900) 25%, transparent);
+}
+
+.dark {
+  /* Nuxt UI Glassmorphism Overrides - Dark Mode */
+  --ui-text-dimmed: var(--color-slate-400);
+  --ui-text-muted: var(--color-slate-300);
+  --ui-text-toned: var(--color-slate-200);
+  --ui-text: var(--color-slate-100);
+  --ui-text-highlighted: #fff;
+
+  --ui-bg: color-mix(in srgb, var(--color-slate-950) 50%, transparent);
+  --ui-bg-muted: color-mix(in srgb, #fff 4%, transparent);
+  --ui-bg-elevated: color-mix(in srgb, #fff 8%, transparent);
+  --ui-bg-accented: color-mix(in srgb, #fff 12%, transparent);
+
+  --ui-border: color-mix(in srgb, #fff 10%, transparent);
+  --ui-border-muted: color-mix(in srgb, #fff 5%, transparent);
+  --ui-border-accented: color-mix(in srgb, #fff 20%, transparent);
+}
+
+/* ========================================
+   2. Base & Document Structure
+   ======================================== */
+
+@layer base {
+  html {
+    @apply bg-primary-200;
+  }
+}
+
+body {
+  @apply bg-slate-100 font-sans text-slate-900 dark:bg-slate-950 dark:text-slate-200;
+  background-image:
+    radial-gradient(circle at 15% 50%, var(--color-primary-200) 0%, transparent 55%),
+    radial-gradient(circle at 85% 30%, var(--color-primary-300) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(circle at 15% 50%, var(--color-primary-900) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, var(--color-primary-800) 0%, transparent 40%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply font-['Plus_Jakarta_Sans',sans-serif]! tracking-[-0.02em];
+}
+
+code,
+pre,
+kbd,
+samp,
+.prose code,
+.prose pre {
+  @apply font-mono! text-[13px];
+}
+
+/* ========================================
+   3. Native UI & Scrollbars
+   ======================================== */
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    @apply [scrollbar-width:thin] [scrollbar-color:var(--color-primary-500)_transparent] dark:[scrollbar-color:var(--color-primary-400)_transparent];
+  }
+}
+
+::-webkit-scrollbar {
+  @apply size-3;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+html::-webkit-scrollbar-track {
+  @apply border-l border-ui-border-muted bg-ui-bg backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full border-[3px] border-transparent bg-primary-500/50 bg-clip-content hover:bg-primary-500/70 dark:bg-primary-400/60 dark:hover:bg-primary-400/80;
+}
+
+/* ========================================
+   4. Animations & Transitions
+   ======================================== */
+
+.animate-float {
+  @apply md:animate-float;
+}
+
+/* Scroll Reveal Animations */
+.reveal {
+  @apply translate-y-5 opacity-0 transition-[opacity,transform] duration-800 ease-in-out;
+}
+
+.reveal-active {
+  @apply translate-y-0 opacity-100;
+}
+
+.stagger-item {
+  @apply translate-y-5 opacity-0 transition-[opacity,transform] duration-600 ease-in-out;
+}
+
+.stagger-visible {
+  @apply translate-y-0 opacity-100;
+}
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  @apply transition-[opacity,transform] duration-200 ease-in-out;
+}
+
+.page-enter-from {
+  @apply translate-y-2 opacity-0;
+}
+
+.page-leave-to {
+  @apply -translate-y-2 opacity-0;
+}
+
+/* ========================================
+   5. Layout Structure
+   ======================================== */
+
+/* Header Layout */
+header {
+  @apply border-b border-ui-border-muted bg-ui-bg backdrop-blur-xl;
+}
+
+header .flex button[data-slot='base']:hover {
+  @apply bg-ui-bg! backdrop-blur-xl!;
+}
+
+header button.bg-elevated {
+  @apply border! border-white/60! bg-white/60! ring-0! backdrop-blur-xl! dark:border-primary-400/20! dark:bg-primary-400/10!;
+}
+
+header button.bg-elevated:hover {
+  @apply border-white/80! bg-white/80! dark:border-primary-400/30! dark:bg-primary-400/20!;
+}
+
+header button.bg-elevated kbd {
+  @apply border-none! bg-white/50! ring-0! dark:bg-primary-400/20!;
+}
+
+/* Hero Uneven Section Layout */
+.hero-uneven {
+  @apply min-h-0! pt-4! pb-0! sm:pt-16! sm:pb-12!;
+}
+
+.hero-uneven > div {
+  @apply min-h-0! pt-8! pb-0! lg:grid-cols-12!;
+}
+
+.hero-uneven > div > div:first-child {
+  @apply lg:col-span-7!;
+}
+
+.hero-uneven > div > div:last-child {
+  @apply lg:col-span-5!;
+}
+
+.hero-uneven [data-slot='title'] {
+  @apply text-3xl! sm:text-4xl! lg:text-5xl!;
+}
+
+/* Hero Mobile Adjustments */
+@media (max-width: 767px) {
+  .hero-uneven [data-slot='headline'],
+  .hero-uneven [data-slot='title'],
+  .hero-uneven [data-slot='description'] {
+    text-align: center !important;
+  }
+
+  .hero-uneven [data-slot='links'] {
+    justify-content: center !important;
+  }
+
+  .hero-uneven > div > div:first-child {
+    text-align: center !important;
+    align-items: center !important;
+    padding-inline: 1.25rem !important;
+  }
+
+  .hero-uneven > div > div:first-child > * {
+    text-align: center !important;
+  }
+
+  .hero-uneven > div > div:first-child > div:last-child,
+  .hero-uneven > div > div:first-child > div[class*='flex'] {
+    justify-content: center !important;
+  }
+}
+
+/* Feature Grid Adjustments */
+.feature-grid-wrapper {
+  @apply relative z-10 -mt-8;
+}
+
+/* ========================================
+   6. UI Components & Elements
+   ======================================== */
+
+@layer components {
+  /* Custom Glass Panels */
+  .glass-panel {
+    @apply border border-ui-border-muted bg-ui-bg shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),0_4px_24px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.03)];
+  }
+
+  .glass-badge {
+    @apply rounded-md! border! border-ui-border-muted! bg-ui-bg! shadow-[0_1px_2px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.6)]! backdrop-blur-xl! dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.03)]!;
+  }
+}
+
+/* Dialogs, Modals & Slideovers */
+div[role='dialog'][data-slot='content'],
+div[role='dialog'] > div[data-slot='content'],
+div[role='dialog'] div[data-slot='body'] {
+  @apply border! border-ui-border-muted! bg-ui-bg! backdrop-blur-2xl!;
+}
+
+div[data-slot='overlay'] {
+  @apply bg-slate-900/20! backdrop-blur-sm! dark:bg-slate-950/60!;
+}
+
+/* Sidebar Navigation */
+aside nav ul ul,
+aside nav div > div > ul,
+nav[data-slot='links'] ul ul {
+  @apply border-ui-border-accented!;
+}
+
+aside nav a,
+aside nav button,
+nav[data-slot='links'] a,
+nav[data-slot='links'] button {
+  @apply text-ui-text-toned!;
+}
+
+aside nav a:hover,
+aside nav button:hover,
+nav[data-slot='links'] a:hover,
+nav[data-slot='links'] button:hover {
+  @apply text-primary-700! dark:text-primary-300!;
+}
+
+aside nav a.router-link-active,
+aside nav button.active,
+nav[data-slot='links'] a.router-link-active {
+  @apply font-bold! text-primary-700! dark:text-primary-300!;
+}
+
+aside nav a .size-4,
+aside nav button .size-4 {
+  @apply text-primary-500/80! dark:text-primary-400/80!;
+}
+
+/* Table of Contents (On this page) */
+.lg\:col-span-2.order-first.lg\:order-last > nav {
+  @apply mx-0! mt-6! rounded-xl! border! border-ui-border-muted! bg-ui-bg! p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-2xl! lg:mt-0! lg:p-6 dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),0_4px_24px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.03)];
+  top: calc(var(--ui-header-height) + 1.5rem) !important;
+  max-height: calc(100vh - var(--ui-header-height) - 3rem) !important;
+}
+
+.lg\:col-span-2.order-first.lg\:order-last > nav > div[data-slot='container'] {
+  @apply border-none! pt-0! pb-0! sm:pb-0! lg:pt-0!;
+}
+
+.lg\:col-span-2.order-first.lg\:order-last
+  > nav
+  > div[data-slot='container']
+  > [data-slot='trigger'] {
+  @apply mt-0!;
+}
+
+/* Interactive Elements */
+div[data-slot='links'] button {
+  @apply border! border-ui-border-muted! bg-ui-bg! backdrop-blur-xl!;
+}
+
+[data-slot='item'] [data-slot='linkLeadingIcon'] {
+  @apply text-ui-text-dimmed!;
+}
+
+/* Highlight only the very first item in the sidebar */
+aside nav > ul > li:first-child > a,
+aside nav > div > div > ul > li:first-child > a,
+nav[data-slot='links'] > ul > li:first-child > a {
+  @apply font-semibold!;
+}
+
+aside nav > ul > li:first-child > a [data-slot='linkLeadingIcon'],
+aside nav > div > div > ul > li:first-child > a [data-slot='linkLeadingIcon'],
+nav[data-slot='links'] > ul > li:first-child > a [data-slot='linkLeadingIcon'] {
+  @apply text-primary-500/80! dark:text-primary-400/80!;
+}
+
+[data-slot='item'] a.group:hover [data-slot='linkLeadingIcon'],
+[data-slot='item'] a.group[data-state='open'] [data-slot='linkLeadingIcon'] {
+  @apply text-primary-600! dark:text-primary-400!;
+}
+
+/* 404 Error Page Button Fix */
+#__nuxt > main > div > button > span.truncate {
+  @apply text-ui-text;
+}
+
+/* ========================================
+   7. Prose & Content Overrides
+   ======================================== */
+
+/* General Document Adjustments */
+[data-slot='content'] {
+  @apply lg:text-[14px];
+}
+
+[data-slot='right'] nav {
+  @apply lg:text-[13px];
+}
+
+/* Markdown Lists */
+.prose ul > li::marker,
+.prose ol > li::marker {
+  @apply font-bold text-primary-600! dark:text-primary-400!;
+}
+
+/* Markdown Blockquotes */
+.prose blockquote {
+  @apply relative my-6 overflow-hidden rounded-r-xl border-l-4 border-primary-400! bg-ui-bg p-5 font-normal! text-ui-text italic shadow-[0_4px_24px_rgba(0,0,0,0.02)] backdrop-blur-md dark:border-primary-500! dark:shadow-[0_4px_24px_rgba(0,0,0,0.1)];
+}
+
+.prose blockquote::before {
+  content: '';
+  @apply pointer-events-none absolute inset-0 bg-gradient-to-r from-primary-400/10 to-transparent opacity-50;
+}
+
+/* Markdown Callouts (Alerts) */
+.prose div.group.relative.block[class*='bg-warning'] {
+  --alert-color: var(--color-warning-500, #f59e0b);
+}
+.prose div.group.relative.block[class*='bg-success'] {
+  --alert-color: var(--color-success-500, #10b981);
+}
+.prose div.group.relative.block[class*='bg-error'] {
+  --alert-color: var(--color-error-500, #ef4444);
+}
+.prose div.group.relative.block[class*='bg-info'] {
+  --alert-color: var(--color-info-500, #3b82f6);
+}
+.prose div.group.relative.block[class*='bg-default'] {
+  --alert-color: var(--color-slate-500, #64748b);
+}
+
+.prose div.group.relative.block[class*='bg-'] {
+  @apply shadow-[0_4px_16px_rgba(0,0,0,0.02),inset_0_1px_0_rgba(255,255,255,0.6)]! backdrop-blur-xl! dark:shadow-[0_4px_24px_rgba(0,0,0,0.1),inset_0_1px_0_rgba(255,255,255,0.03)]!;
+  background-color: color-mix(
+    in srgb,
+    var(--alert-color) 10%,
+    rgba(255, 255, 255, 0.85)
+  ) !important;
+  border-color: color-mix(in srgb, var(--alert-color) 30%, transparent) !important;
+  color: var(--ui-text-toned) !important;
+}
+
+.dark .prose div.group.relative.block[class*='bg-'] {
+  background-color: color-mix(in srgb, var(--alert-color) 15%, rgba(2, 6, 23, 0.85)) !important;
+}
+
+.prose div.group.relative.block[class*='bg-'] strong {
+  @apply font-bold!;
+  color: var(--ui-text-highlighted) !important;
+}
+
+.prose div.group.relative.block[class*='bg-'] .iconify {
+  color: var(--alert-color) !important;
+}
+
+/* Markdown Code Blocks */
+.prose pre.shiki::-webkit-scrollbar {
+  @apply size-2;
+}
+
+.prose pre.shiki::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.prose pre.shiki::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-primary-400/30 hover:bg-primary-500/50 dark:bg-primary-600/25 dark:hover:bg-primary-500/40;
+}
+
+.prose code:not(pre code) {
+  @apply rounded-md! border! border-ui-border-muted! bg-ui-bg! px-[0.375em]! py-[0.1em]! font-mono! text-[0.875em]! leading-tight! text-primary-700! shadow-[0_1px_2px_rgba(0,0,0,0.04),inset_0_1px_0_rgba(255,255,255,0.6)]! backdrop-blur-xl! dark:text-primary-300! dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.03)]!;
+}
+
+.prose code:not(pre code)::before,
+.prose code:not(pre code)::after {
+  content: none !important;
+}
+
+/* Markdown Tables */
+table {
+  @apply my-8 table w-full! border-separate! border-spacing-0! overflow-hidden rounded-xl border border-ui-border-muted bg-ui-bg text-left shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.03),inset_0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl dark:shadow-[0_1px_2px_rgba(0,0,0,0.2),0_4px_24px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.03)];
+}
+
+thead th {
+  @apply border-t-0! border-r! border-b! border-l-0! border-ui-border-muted! bg-ui-bg-muted! p-4 font-semibold text-ui-text;
+}
+
+thead th:last-child {
+  @apply border-r-0!;
+}
+
+tbody tr {
+  @apply border-none! transition-colors hover:bg-ui-bg-muted;
+}
+
+tbody td {
+  @apply border-t-0! border-r! border-b! border-l-0! border-ui-border-muted! p-4 align-top;
+}
+
+tbody td:last-child {
+  @apply border-r-0!;
+}
+
+tbody tr:last-child td {
+  @apply border-b-0!;
+}
+
+/* Mermaid Diagrams */
+.mermaid-diagram * {
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+}
+
+/* Docs Prev/Next Navigation Links */
+.grid > a[data-slot='link'] {
+  @apply border! border-ui-border-muted! bg-ui-bg! backdrop-blur-xl! transition-all duration-300;
+}
+
+.grid > a[data-slot='link']:hover {
+  @apply bg-ui-bg-elevated! shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)];
+}
+
+.grid > a[data-slot='link'] [data-slot='linkLeading'],
+.grid > a[data-slot='link'] [data-slot='linkTrailing'] {
+  @apply border border-ui-border-muted! bg-ui-bg-elevated! ring-0! transition-colors;
+}
+
+.grid > a[data-slot='link']:hover [data-slot='linkLeading'],
+.grid > a[data-slot='link']:hover [data-slot='linkTrailing'] {
+  @apply border-ui-border-accented! bg-ui-bg-accented!;
+}
